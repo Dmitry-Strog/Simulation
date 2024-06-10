@@ -1,6 +1,7 @@
 from collections import deque
 from entities.dynamic_objects.herbivore import Herbivore
 from entities.dynamic_objects.predator import Predator
+from map.coordinate import Coordinates
 
 
 class PathFinder:
@@ -16,8 +17,12 @@ class PathFinder:
             if nearest_grass:
                 self.bfs(start_coor, (nearest_grass.coordinate.row, nearest_grass.coordinate.column))
                 return self.get_path(nearest_grass.coordinate)
-        # elif isinstance(creature, Predator):
-        #     pass
+        elif isinstance(creature, Predator):
+            herbivore_coords = self.maps.get_list_herbivore()
+            nearest_herbivore = self.find_nearest_grass(start_coor, herbivore_coords)
+            if nearest_herbivore:
+                self.bfs(start_coor, (nearest_herbivore.coordinate.row, nearest_herbivore.coordinate.column))
+                return self.get_path(nearest_herbivore.coordinate)
 
         return []
 
@@ -33,7 +38,7 @@ class PathFinder:
         return nearest_grass
 
     def bfs(self, start, end):
-        next_node = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        next_node = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
         queue = deque([start])
         visit = {start}
 
@@ -44,13 +49,16 @@ class PathFinder:
                 break
 
             x, y = cur_node
-
+            desired_entity = self.maps.get_entity(end)
             for dx, dy in next_node:
                 nx, ny = dx + x, dy + y
+
                 if 0 <= nx < self.maps.height and 0 <= ny < self.maps.width and (nx, ny) not in visit:
-                    queue.append((nx, ny))
-                    visit.add((nx, ny))
-                    self.save_path[nx][ny] = (x, y)
+                    checking_entity = self.maps.get_entity((nx, ny))
+                    if checking_entity is None or isinstance(checking_entity, type(desired_entity)):
+                        queue.append((nx, ny))
+                        visit.add((nx, ny))
+                        self.save_path[nx][ny] = (x, y)
 
     def get_path(self, end):
         """ Получить путь списком """

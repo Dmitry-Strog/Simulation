@@ -27,15 +27,13 @@ class Map:
 
     def get_entity(self, coor):
         key = Coordinates(coor[0], coor[1])
-        return self.collection_entity[key]
+        return self.collection_entity.get(key, None)
 
     def remove_entity(self, entity):
         """Удаление существа"""
         key = Coordinates(entity[0], entity[1])
         if key in self.collection_entity:
             del self.collection_entity[key]
-        else:
-            print("Координата не найдена")
 
     def is_entity(self, coor):
         """Проверка не занята ли клетка"""
@@ -57,6 +55,14 @@ class Map:
             if isinstance(entity, Grass):
                 list_grass.append(entity)
         return list_grass
+
+    def get_list_herbivore(self):
+        """Получить список травы"""
+        list_herbivore = []
+        for entity in self.collection_entity.values():
+            if isinstance(entity, Herbivore):
+                list_herbivore.append(entity)
+        return list_herbivore
 
     def update_map(self):
         """Обновляет карту, размещая существа"""

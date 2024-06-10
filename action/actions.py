@@ -1,4 +1,5 @@
 import random
+from time import sleep
 
 from action.pathfinder import PathFinder
 from entities.dynamic_objects.herbivore import Herbivore
@@ -10,7 +11,7 @@ from map.map import Map
 
 class Actions:
     def __init__(self):
-        self.map = Map(8, 8)
+        self.map = Map(12, 12)
 
     def init_actions(self, dict_enity):
         """ Выставить существа на карту"""
@@ -30,23 +31,32 @@ class Actions:
 
     def turn_actions(self):
         """Выполнение 1 хода"""
-        while int(input("Нажми 1 - Сделать ход, 0 Закончить игру \n Ответ: ")) == 1:
+        while True:
 
             for value in self.map.get_list_creature():
+
                 if isinstance(value, Herbivore):
                     path = PathFinder(self.map).find_path(value)
                     value.make_move(self.map, path)
 
                 elif isinstance(value, Predator):
-                    pass
-                    # path = PathFinder(self.map).find_path(value)
-                    # value.make_move(self.map, path)
-                    # self.map.display_map()
-            if not self.map.get_list_grass():
-                print("Всю травку скушали!")
+                    path = PathFinder(self.map).find_path(value)
+                    value.make_move(self.map, path)
+                if value.hp <= 0:
+                    self.map.remove_entity((value.coordinate.row, value.coordinate.column))
+            print("=================================================================================")
+            print([(i, i.hp) for i in self.map.get_list_creature()], "- Коолекция существ")
+            # if not self.map.get_list_grass():
+            #     self.map.display_map()
+            #     print("Всю травку скушали!")
+            #     print([(i, i.hp)for i in self.map.collection_entity.values()], "- Коолекция существ")  # Дебаг принт
+            #     break
+            if not self.map.get_list_herbivore():
+                self.map.display_map()
+                print("На карте не осталось травоядных!")
+                print([(i, i.hp) for i in self.map.get_list_creature()], "- Коолекция существ")  # Дебаг принт
                 break
+            sleep(1)
             self.map.display_map()
-        # else:
-        #     return print("Stop Game")
 
 

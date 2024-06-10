@@ -5,7 +5,7 @@ from map.coordinate import Coordinates
 class Grass(Entity):
     """ Статичный объект Трава """
 
-    def __init__(self, coordinate: Coordinates, hp=2):
+    def __init__(self, coordinate: Coordinates, hp=40):
         super().__init__(coordinate)
         self.hp = hp
 

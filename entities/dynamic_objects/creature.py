@@ -20,7 +20,6 @@ class Creature(Entity):
             print(self, "Не найден путь")
             return
         if self.speed + 1 >= len(path):
-            print(self, "Кушаю")
             self.eat(world_map, path)
             obj = world_map.get_entity(path[-1])
             if obj.hp <= 0:
