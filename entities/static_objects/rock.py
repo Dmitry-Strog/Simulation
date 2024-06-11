@@ -9,4 +9,4 @@ class Rock(Entity):
         super().__init__(coordinate)
 
     def __repr__(self):
-        return "R"
+        return "\U0001FAA8"

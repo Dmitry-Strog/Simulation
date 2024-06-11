@@ -14,11 +14,6 @@ class Map:
         self.height = height  # высота карты
         self.width = width  # ширина карты
         self.collection_entity = {}
-        self.map = self.create_map()
-
-    def create_map(self):
-        """ Создание поле карты"""
-        return [['.'] * self.height for _ in range(self.width)]
 
     def place_entity(self, coord, entity):
         """Размещение сущности"""
@@ -64,17 +59,5 @@ class Map:
                 list_herbivore.append(entity)
         return list_herbivore
 
-    def update_map(self):
-        """Обновляет карту, размещая существа"""
-        self.map = self.create_map()  # Очистить карту
-        for coordinates, creature in self.collection_entity.items():
-            self.map[coordinates.row][coordinates.column] = str(creature)
-
-    def display_map(self):
-        """Отображает карту в консоли"""
-        self.update_map()  # Обновить карту перед отображением
-        for row in self.map:
-            print('[' + ']['.join(row) + ']')
-        print()
 
 

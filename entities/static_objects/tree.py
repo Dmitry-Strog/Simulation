@@ -9,4 +9,4 @@ class Tree(Entity):
         super().__init__(coordinate)
 
     def __repr__(self):
-        return "T"
+        return "\U0001F332"

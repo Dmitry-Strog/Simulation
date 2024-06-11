@@ -4,14 +4,15 @@ from time import sleep
 from action.pathfinder import PathFinder
 from entities.dynamic_objects.herbivore import Herbivore
 from entities.dynamic_objects.predator import Predator
-from entities.entity import Entity
 from map.coordinate import Coordinates
 from map.map import Map
+from map.render_Input import RenderInput
 
 
 class Actions:
     def __init__(self):
         self.map = Map(12, 12)
+        self.render = RenderInput(self.map)
 
     def init_actions(self, dict_enity):
         """ Выставить существа на карту"""
@@ -27,36 +28,28 @@ class Actions:
                         break
 
         print(list(self.map.collection_entity.values()), "- Коолекция существ")  # Дебаг принт
-        self.map.display_map()
+        self.render.display_map()
 
     def turn_actions(self):
         """Выполнение 1 хода"""
         while True:
 
             for value in self.map.get_list_creature():
+                x = list([value.hp])
+                if value.hp == 0:
+                    print('Error')
+                path = PathFinder(self.map).find_path(value)
+                value.make_move(self.map, path)
 
-                if isinstance(value, Herbivore):
-                    path = PathFinder(self.map).find_path(value)
-                    value.make_move(self.map, path)
-
-                elif isinstance(value, Predator):
-                    path = PathFinder(self.map).find_path(value)
-                    value.make_move(self.map, path)
-                if value.hp <= 0:
-                    self.map.remove_entity((value.coordinate.row, value.coordinate.column))
-            print("=================================================================================")
             print([(i, i.hp) for i in self.map.get_list_creature()], "- Коолекция существ")
-            # if not self.map.get_list_grass():
-            #     self.map.display_map()
-            #     print("Всю травку скушали!")
-            #     print([(i, i.hp)for i in self.map.collection_entity.values()], "- Коолекция существ")  # Дебаг принт
-            #     break
+            print()
+            print("Следующий ход:")
+
             if not self.map.get_list_herbivore():
-                self.map.display_map()
+                self.render.display_map()
                 print("На карте не осталось травоядных!")
                 print([(i, i.hp) for i in self.map.get_list_creature()], "- Коолекция существ")  # Дебаг принт
                 break
-            sleep(1)
-            self.map.display_map()
+            self.render.display_map()
 
 

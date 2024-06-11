@@ -14,4 +14,4 @@ class Herbivore(Creature):
         obj.hp -= self.attack
 
     def __repr__(self):
-        return "H"
+        return "\U0001F410"

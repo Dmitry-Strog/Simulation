@@ -24,13 +24,17 @@ class Creature(Entity):
             obj = world_map.get_entity(path[-1])
             if obj.hp <= 0:
                 world_map.remove_entity(path[-1])
+            print(f"{self} - {self.hp} Атакует {obj}")
 
         else:
             # Сделать шаг по пути
+            if self.hp <= 0:
+                world_map.remove_entity((self.coordinate.row, self.coordinate.column))
             var = path[self.speed]
             if world_map.is_entity(Coordinates(var[0], var[1])):
                 world_map.place_entity(Coordinates(var[0], var[1]), self)
                 world_map.remove_entity(path[0])
+                print(f"{self} - {self.hp} Сходил на {var}")
             else:
                 print(f"{self} Нет пути!")
 

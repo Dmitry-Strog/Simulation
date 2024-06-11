@@ -15,5 +15,6 @@ class Predator(Creature):
         herbivore = path[-1]
         obj = world_map.get_entity(herbivore)
         obj.hp -= self.attack
+
     def __repr__(self):
-        return "P"
+        return "\U0001F43A"

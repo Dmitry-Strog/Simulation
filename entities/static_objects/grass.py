@@ -10,4 +10,4 @@ class Grass(Entity):
         self.hp = hp
 
     def __repr__(self):
-        return "G"
+        return "\U0001F331"
