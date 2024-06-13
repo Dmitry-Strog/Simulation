@@ -23,7 +23,7 @@ class Simulation:
         self.action.turn_actions()
         self.move_counter += 1
         self.render.display_map()
-        sleep(1)
+        # sleep(1)
 
     def start_simulation(self):
         """запустить бесконечный цикл симуляции и рендеринга"""
@@ -36,6 +36,8 @@ class Simulation:
                 self.pause_simulation()
                 count = 0
             self.next_turn()
+            self.action.check_and_add_grass()
+            print(len(self.maps.get_list_grass()))
             count += 1
 
     def pause_simulation(self):
@@ -46,11 +48,11 @@ class Simulation:
 
 if __name__ == '__main__':
     map_populations = {
-        Herbivore: 4,
+        Herbivore: 6,
         Predator: 2,
-        Grass: 8,
-        Rock: 10,
-        Tree: 10,
+        Grass: 10,
+        Rock: 12,
+        Tree: 14,
     }
     game = Simulation(map_populations)
     game.start_simulation()
