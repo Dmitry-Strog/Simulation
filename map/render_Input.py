@@ -6,6 +6,13 @@ class RenderInput:
         self.map = map
         self.board = self.create_map()
 
+    def display_map(self):
+        """Отображает карту в консоли"""
+        self.update_map()
+        for row in self.board:
+            print('  '.join(row))
+        print()
+
     def create_map(self):
         """ Создание поле карты"""
         return [['\u29C8 '] * self.map.height for _ in range(self.map.width)]
@@ -15,10 +22,3 @@ class RenderInput:
         self.board = self.create_map()  # Очистить карту
         for coordinates, creature in self.map.collection_entity.items():
             self.board[coordinates.row][coordinates.column] = str(creature)
-
-    def display_map(self):
-        """Отображает карту в консоли"""
-        self.update_map()
-        for row in self.board:
-            print('  '.join(row))
-        print()

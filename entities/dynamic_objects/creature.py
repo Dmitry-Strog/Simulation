@@ -16,27 +16,30 @@ class Creature(Entity):
         self.attack = attack
 
     def make_move(self, world_map, path):
+
         if not path:
             print(self, "Не найден путь")
             return
-        if self.speed + 1 >= len(path):
-            self.eat(world_map, path)
-            obj = world_map.get_entity(path[-1])
-            if obj.hp <= 0:
-                world_map.remove_entity(path[-1])
-            print(f"{self} - {self.hp} Атакует {obj}")
 
-        else:
-            # Сделать шаг по пути
-            if self.hp <= 0:
-                world_map.remove_entity((self.coordinate.row, self.coordinate.column))
-            var = path[self.speed]
-            if world_map.is_entity(Coordinates(var[0], var[1])):
-                world_map.place_entity(Coordinates(var[0], var[1]), self)
-                world_map.remove_entity(path[0])
-                print(f"{self} - {self.hp} Сходил на {var}")
+        if self.hp > 0:
+            if self.speed + 1 >= len(path):
+                self.eat(world_map, path)
+                obj = world_map.get_entity(path[-1])
+                if obj.hp <= 0:
+                    print(f"{self} - {self.hp} Убил {obj}")
+                    world_map.remove_entity(path[-1])
+                print(f"{self} - {self.hp} Атакует {obj}")
             else:
-                print(f"{self} Нет пути!")
+                # Сделать шаг по пути
+                var = path[self.speed]
+                if world_map.is_entity(Coordinates(var[0], var[1])):
+                    world_map.place_entity(Coordinates(var[0], var[1]), self)
+                    world_map.remove_entity(path[0])
+                    print(f"{self} - {self.hp} Сходил на {var}")
+                else:
+                    print(f"{self} Нет пути!")
+        else:
+            world_map.remove_entity((self.coordinate.row, self.coordinate.column))
 
     @abstractmethod
     def eat(self, world_map, path):
