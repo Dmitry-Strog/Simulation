@@ -7,11 +7,18 @@ class Herbivore(Creature):
 
     def __init__(self, coordinate, speed=1, hp=60, attack=20):
         super().__init__(coordinate, speed, hp, attack)
+        self._max_hp = 60
 
     def eat(self, world_map, path):
         grass = path[-1]
         obj = world_map.get_entity(grass)
         obj.hp -= self.attack
+
+    def add_health(self):
+        self.hp += 10
+
+    def decrease_health(self):
+        self.hp -= 5
 
     def __repr__(self):
         return "\U0001F410"

@@ -59,5 +59,12 @@ class Map:
                 list_herbivore.append(entity)
         return list_herbivore
 
+    def get_list_predators(self):
+        """Получить список травы"""
+        list_predators = []
+        for entity in self.collection_entity.values():
+            if isinstance(entity, Herbivore):
+                list_predators.append(entity)
+        return list_predators
 
 

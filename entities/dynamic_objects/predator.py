@@ -10,11 +10,18 @@ class Predator(Creature):
 
     def __init__(self, coordinate, speed=1, hp=100, attack=20):
         super().__init__(coordinate, speed, hp, attack)
+        self._max_hp = 100
 
     def eat(self, world_map, path):
         herbivore = path[-1]
         obj = world_map.get_entity(herbivore)
         obj.hp -= self.attack
+
+    def add_health(self):
+        self.hp += 20
+
+    def decrease_health(self):
+        self.hp -= 10
 
     def __repr__(self):
         return "\U0001F43A"

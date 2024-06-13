@@ -20,9 +20,9 @@ class Simulation:
 
     def next_turn(self):
         """просимулировать и отрендерить один ход"""
+        self.render.display_map()
         self.action.turn_actions()
         self.move_counter += 1
-        self.render.display_map()
         # sleep(1)
 
     def start_simulation(self):
@@ -30,15 +30,20 @@ class Simulation:
         count = 0
         while True:
             if not self.maps.get_list_herbivore():
+                self.render.display_map()
                 print("На карте не осталось травоядных!")
+                break
+            elif not self.maps.get_list_predators():
+                self.render.display_map()
+                print("Хищники умерли с голоду!")
                 break
             if count == 10:
                 self.pause_simulation()
                 count = 0
             self.next_turn()
             self.action.check_and_add_grass()
-            print(len(self.maps.get_list_grass()))
             count += 1
+            print([(i, i.hp) for i in self.maps.get_list_creature()])
 
     def pause_simulation(self):
         """приостановить бесконечный цикл симуляции и рендеринга"""
