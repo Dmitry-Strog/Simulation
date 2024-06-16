@@ -25,24 +25,16 @@ class Creature(Entity):
         if self.hp > 0:
             if self.speed + 1 >= len(path):
                 self.eat(world_map, path)
-                obj = world_map.get_entity(path[-1])
-                if obj.hp <= 0:
-                    if self.is_check_max_hp():
-                        self.add_health()
-                    print(f"{self} - {self.hp} Убил {obj}")
-                    world_map.remove_entity(path[-1])
+
             else:
                 # Сделать шаг по пути
                 var = path[self.speed]
-                if world_map.is_entity(Coordinates(var[0], var[1])):
-                    world_map.place_entity(Coordinates(var[0], var[1]), self)
-                    world_map.remove_entity(path[0])
-                    print("hp до", self.hp, self)
-                    self.decrease_health()
-                    self.is_alive_creature(world_map, (self.coordinate.row, self.coordinate.column))
-                    print("hp после", self.hp, self)
-                else:
-                    print(f"{self} Нет пути!")
+                world_map.place_entity(Coordinates(var[0], var[1]), self)
+                world_map.remove_entity(path[0])
+                # print("hp до", self.hp, self)
+                self.decrease_health()
+                self.is_alive_creature(world_map, (self.coordinate.row, self.coordinate.column))
+                # print("hp после", self.hp, self)
         else:
             world_map.remove_entity((self.coordinate.row, self.coordinate.column))
 
@@ -56,11 +48,10 @@ class Creature(Entity):
             print(self, 'Умер с голоду')
             world_map.remove_entity(coor)
 
-    def is_check_max_hp(self, ):
+    def check_max_hp(self, ):
         """Проверка hp существа"""
-        if self.hp < self._max_hp:
-            return True
-        return False
+        if self.hp > self._max_hp:
+            self.hp = self._max_hp
 
     @abstractmethod
     def add_health(self):
@@ -69,5 +60,5 @@ class Creature(Entity):
 
     @abstractmethod
     def decrease_health(self):
-        """Уменьшить здоровье hp"""
+        """Уменьшить существу hp"""
         pass

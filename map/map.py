@@ -31,7 +31,7 @@ class Map:
             del self.collection_entity[key]
 
     def is_entity(self, coor):
-        """Проверка не занята ли клетка"""
+        """Проверка не свободная ли клетка"""
         if self.collection_entity.get(coor) is None:
             return True
 

@@ -16,9 +16,14 @@ class Predator(Creature):
         herbivore = path[-1]
         obj = world_map.get_entity(herbivore)
         obj.hp -= self.attack
+        if obj.hp <= 0:
+            world_map.remove_entity(herbivore)
+            self.add_health()
+            print(f"{self} - {self.hp} Убил {obj}")
 
     def add_health(self):
         self.hp += 20
+        self.check_max_hp()
 
     def decrease_health(self):
         self.hp -= 10

@@ -13,37 +13,36 @@ from map.render_Input import RenderInput
 class Simulation:
     def __init__(self, map_population):
         self.maps = Map(12, 12)
-        self.render = RenderInput(self.maps)
         self.move_counter = 0
+        self.render = RenderInput(self.maps)
         self.action = Actions(self.maps, map_population)
         self.action.init_actions()
 
     def next_turn(self):
         """просимулировать и отрендерить один ход"""
-        self.render.display_map()
+        self.render.display_map(self.move_counter, self.maps.get_list_herbivore())
         self.action.turn_actions()
         self.move_counter += 1
-        # sleep(1)
+        sleep(1)
 
     def start_simulation(self):
         """запустить бесконечный цикл симуляции и рендеринга"""
         count = 0
         while True:
             if not self.maps.get_list_herbivore():
-                self.render.display_map()
+                self.render.display_map(self.move_counter, self.maps.get_list_herbivore())
                 print("На карте не осталось травоядных!")
                 break
             elif not self.maps.get_list_predators():
-                self.render.display_map()
+                self.render.display_map(self.move_counter, self.maps.get_list_herbivore())
                 print("Хищники умерли с голоду!")
                 break
-            if count == 10:
+            if count == 50:
                 self.pause_simulation()
                 count = 0
             self.next_turn()
             self.action.check_and_add_grass()
             count += 1
-            print([(i, i.hp) for i in self.maps.get_list_creature()])
 
     def pause_simulation(self):
         """приостановить бесконечный цикл симуляции и рендеринга"""
