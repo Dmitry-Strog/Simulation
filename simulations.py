@@ -1,3 +1,4 @@
+import os
 from time import sleep
 
 from action.actions import Actions
@@ -19,35 +20,38 @@ class Simulation:
         self.action.init_actions()
 
     def next_turn(self):
-        """просимулировать и отрендерить один ход"""
-        self.render.display_map(self.move_counter, self.maps.get_list_herbivore())
+        """Про симулировать и отрендерить один ход"""
+        self.render.display_map(self.move_counter)
         self.action.turn_actions()
         self.move_counter += 1
         sleep(1)
+        os.system('clear')
 
     def start_simulation(self):
-        """запустить бесконечный цикл симуляции и рендеринга"""
+        """Запустить бесконечный цикл симуляции и рендеринга"""
         count = 0
         while True:
             if not self.maps.get_list_herbivore():
-                self.render.display_map(self.move_counter, self.maps.get_list_herbivore())
+                self.render.display_map(self.move_counter)
                 print("На карте не осталось травоядных!")
                 break
             elif not self.maps.get_list_predators():
-                self.render.display_map(self.move_counter, self.maps.get_list_herbivore())
+                self.render.display_map(self.move_counter)
                 print("Хищники умерли с голоду!")
                 break
-            if count == 50:
+            if count == 10:
                 self.pause_simulation()
                 count = 0
             self.next_turn()
             self.action.check_and_add_grass()
             count += 1
 
-    def pause_simulation(self):
-        """приостановить бесконечный цикл симуляции и рендеринга"""
-        if not input("Нажмите '1' что бы продолжить '0' что бы выйти \n"):
+    @staticmethod
+    def pause_simulation():
+        """Приостановить бесконечный цикл симуляции и рендеринга"""
+        if not int(input("Нажмите '1' что бы продолжить '0' что бы выйти \n")):
             print("Вы вышли из игры!")
+            exit()
 
 
 if __name__ == '__main__':

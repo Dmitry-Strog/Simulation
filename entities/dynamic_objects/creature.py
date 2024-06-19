@@ -9,12 +9,14 @@ class Creature(Entity):
     количество HP. Имеет абстрактный метод make_move() - сделать ход. Наследники будут реализовывать этот метод каждый
     по-своему. """
 
-    def __init__(self, coordinate: Coordinates, speed, hp, attack):
+    def __init__(self, coordinate: Coordinates, speed, hp, attack, health_increase, health_decrease):
         super().__init__(coordinate)
         self.speed = speed
         self.hp = hp
         self.attack = attack
         self._max_hp = hp
+        self._health_increase = health_increase
+        self._health_decrease = health_decrease
 
     def make_move(self, world_map, path):
 
@@ -22,43 +24,42 @@ class Creature(Entity):
             print(self, "Не найден путь")
             return
 
-        if self.hp > 0:
-            if self.speed + 1 >= len(path):
-                self.eat(world_map, path)
-
-            else:
-                # Сделать шаг по пути
-                var = path[self.speed]
-                world_map.place_entity(Coordinates(var[0], var[1]), self)
-                world_map.remove_entity(path[0])
-                # print("hp до", self.hp, self)
-                self.decrease_health()
-                self.is_alive_creature(world_map, (self.coordinate.row, self.coordinate.column))
-                # print("hp после", self.hp, self)
-        else:
+        if self.hp <= 0:
             world_map.remove_entity((self.coordinate.row, self.coordinate.column))
+            return
 
-    @abstractmethod
+        if self.speed + 1 >= len(path):
+            self.eat(world_map, path)
+        else:
+            next_position = path[self.speed]
+            world_map.place_entity(Coordinates(next_position[0], next_position[1]), self)
+            world_map.remove_entity(path[0])
+            self.decrease_health()
+            self.is_alive_creature(world_map, (self.coordinate.row, self.coordinate.column))
+
     def eat(self, world_map, path):
-        """Метод Атаки сущетсва"""
-        pass
+        target = path[-1]
+        obj = world_map.get_entity(target)
+        obj.hp -= self.attack
+        if obj.hp <= 0:
+            world_map.remove_entity(target)
+            self.add_health()
+            print(f"{self}({self.hp}) Съел {obj}")
 
     def is_alive_creature(self, world_map, coor: tuple):
+        """Проверяет, живо ли существо и удаляет его, если оно мертво."""
         if self.hp <= 0:
             print(self, 'Умер с голоду')
             world_map.remove_entity(coor)
 
     def check_max_hp(self, ):
-        """Проверка hp существа"""
+        """Проверка, чтобы hp существа не превышало максимальное значение."""
         if self.hp > self._max_hp:
             self.hp = self._max_hp
 
-    @abstractmethod
     def add_health(self):
-        """Добавить существу hp"""
-        pass
+        self.hp += self._health_increase
+        self.check_max_hp()
 
-    @abstractmethod
     def decrease_health(self):
-        """Уменьшить существу hp"""
-        pass
+        self.hp -= self._health_decrease
