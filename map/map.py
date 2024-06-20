@@ -8,57 +8,137 @@ from map.coordinate import Coordinates
 
 
 class Map:
-    """ Карта, содержит в себе коллекцию для хранения существ и их расположения.
-    Советую не спешить использовать двумерный массив или список списков,
-    а подумать какие ещё коллекции могут подойти."""
+    """
+    Класс Map представляет карту, на которой располагаются различные сущности.
+
+    Attributes:
+        height (int): Высота карты.
+        width (int): Ширина карты.
+        _collection_entity (dict): Словарь для хранения сущностей на карте.
+    """
 
     def __init__(self, height, width):
+        """
+        Инициализация объекта карты с заданными размерами.
+
+        Args:
+            height (int): Высота карты.
+            width (int): Ширина карты.
+        """
         self._height = height
         self._width = width
         self._collection_entity = {}
 
     @property
     def height(self):
+        """
+        Возвращает высоту карты.
+
+        Returns:
+            int: Высота карты.
+        """
         return self._height
 
     @property
     def width(self):
+        """
+        Возвращает ширину карты.
+
+        Returns:
+            int: Ширина карты.
+        """
+
         return self._width
 
     def place_entity(self, coord, entity):
-        """Размещение сущности"""
+        """
+        Размещает сущность на указанных координатах.
+
+        Args:
+            coord (Coordinates): Координаты, на которых размещается сущность.
+            entity (Entity): Объект сущности, которую нужно разместить.
+        """
         self._collection_entity[coord] = entity
         entity.coordinate = coord
 
     def get_entity(self, coordinate):
+        """
+        Возвращает сущность по заданным координатам.
+
+        Args:
+            coordinate (tuple): Кортеж с координатами (row, column).
+
+        Returns:
+            Entity or None: Сущность на указанных координатах или None, если клетка пуста.
+        """
         key = Coordinates(coordinate[0], coordinate[1])
         return self._collection_entity.get(key, None)
 
     def remove_entity(self, coordinate):
-        """Удаление существа"""
+        """
+        Удаляет сущность с указанных координат.
+
+        Args:
+            coordinate (tuple): Кортеж с координатами (row, column).
+        """
         key = Coordinates(coordinate[0], coordinate[1])
         if key in self._collection_entity:
             del self._collection_entity[key]
 
     def is_entity(self, coordinate):
-        """Проверка не свободная ли клетка"""
+        """
+        Проверяет, свободна ли указанная клетка на карте.
+
+        Args:
+            coordinate (tuple): Кортеж с координатами (row, column).
+
+        Returns:
+            bool: True, если клетка свободна (нет сущности), иначе False.
+        """
         return self._collection_entity.get(coordinate) is None
 
     def get_all_entity(self):
-        return self._collection_entity.values()
+        """
+        Возвращает все сущности на карте.
+
+        Returns:
+            list: Список всех сущностей на карте.
+        """
+        return list(self._collection_entity.values())
 
     def get_list_creature(self):
-        """ Получить список существ """
+        """
+        Возвращает список всех существ на карте.
+
+        Returns:
+            list: Список всех существ на карте.
+        """
         return [entity for entity in self._collection_entity.values() if isinstance(entity, Creature)]
 
     def get_list_grass(self):
-        """Получить список травы"""
+        """
+        Возвращает список всех объектов травы на карте.
+
+        Returns:
+            list: Список всех объектов травы на карте.
+        """
         return [entity for entity in self._collection_entity.values() if isinstance(entity, Grass)]
 
     def get_list_herbivore(self):
-        """Получить список травоядных"""
+        """
+        Возвращает список всех травоядных на карте.
+
+        Returns:
+            list: Список всех травоядных на карте.
+        """
         return [entity for entity in self._collection_entity.values() if isinstance(entity, Herbivore)]
 
     def get_list_predators(self):
-        """Получить список хищников"""
+        """
+        Возвращает список всех хищников на карте.
+
+        Returns:
+            list: Список всех хищников на карте.
+        """
         return [entity for entity in self._collection_entity.values() if isinstance(entity, Predator)]
+

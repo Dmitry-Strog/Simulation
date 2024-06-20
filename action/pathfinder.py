@@ -4,11 +4,35 @@ from entities.dynamic_objects.predator import Predator
 
 
 class PathFinder:
+    """
+    Класс PathFinder отвечает за поиск путей для существ на карте.
+
+    Attributes:
+        _maps (Map): Объект карты, на которой происходят все действия.
+        _save_path (list): Двумерный список для сохранения путей.
+    """
+
     def __init__(self, maps):
+        """
+        Инициализирует объект PathFinder с заданной картой.
+
+        Args:
+            maps (Map): Объект карты.
+        """
         self._maps = maps
         self._save_path = [[None] * maps.width for _ in range(maps.height)]
 
     def find_path(self, creature):
+        """
+        Находит путь для существа на карте. Если существо - травоядное, ищет ближайшую траву.
+        Если существо - хищник, ищет ближайшего травоядного.
+
+        Args:
+            creature (Creature): Существо, для которого необходимо найти путь.
+
+        Returns:
+            list: Список координат, представляющих путь.
+        """
         start_coord = (creature.coordinate.row, creature.coordinate.column)
         if isinstance(creature, Herbivore):
             grass_coord = self._maps.get_list_grass()
@@ -26,7 +50,17 @@ class PathFinder:
         return []
 
     def _find_nearest_grass(self, start, targets):
-        """Вычисляем манхэттенское расстояние от начальной координаты до координаты текущего объекта Grass"""
+        """
+        Находит ближайший объект из списка целей (например, траву или травоядное) с использованием Манхеттенского
+        расстояния.
+
+        Args:
+            start (tuple): Начальная координата.
+            targets (list): Список объектов с координатами.
+
+        Returns:
+            object: Ближайший объект из списка целей.
+        """
         min_distance = float('inf')
         nearest_target = None
         for target in targets:
@@ -37,6 +71,13 @@ class PathFinder:
         return nearest_target
 
     def _bfs(self, start, end):
+        """
+        Алгоритм поиска в ширину (BFS) для нахождения пути от начальной координаты до конечной.
+
+        Args:
+            start (tuple): Начальная координата.
+            end (tuple): Конечная координата.
+        """
         next_node = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
         queue = deque([start])
         visit = {start}
@@ -59,7 +100,15 @@ class PathFinder:
                         self._save_path[nx][ny] = (x, y)
 
     def _get_path(self, end):
-        """ Получить путь списком """
+        """
+        Восстанавливает путь от конечной координаты до начальной.
+
+        Args:
+            end (Coordinates): Конечная координата.
+
+        Returns:
+            list: Список координат, представляющих путь.
+        """
         curr = (end.row, end.column)
         path = []
         while curr is not None:
@@ -67,3 +116,4 @@ class PathFinder:
             curr = self._save_path[curr[0]][curr[1]]
         path.reverse()
         return path
+
