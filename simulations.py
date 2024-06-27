@@ -2,11 +2,11 @@ import os
 from time import sleep
 
 from action.actions import Actions
-from entities.dynamic_objects.herbivore import Herbivore
-from entities.dynamic_objects.predator import Predator
-from entities.static_objects.grass import Grass
-from entities.static_objects.rock import Rock
-from entities.static_objects.tree import Tree
+from action.spawn_entity.generation_entity.spawn_grass import SpawnGrass
+from action.spawn_entity.generation_entity.spawn_herbivore import SpawnHerbivore
+from action.spawn_entity.generation_entity.spawn_predator import SpawnPredator
+from action.spawn_entity.generation_entity.spawn_rock import SpawnRock
+from action.spawn_entity.generation_entity.spawn_tree import SpawnTree
 from map.map import Map
 from map.render_Input import RenderInput
 
@@ -16,7 +16,6 @@ class Simulation:
     Класс Simulation управляет основной логикой симуляции экосистемы.
 
     Attributes:
-        map_population (dict): Словарь, определяющий начальное распределение существ и объектов на карте.
         maps (Map): Объект карты, представляющий текущее состояние мира.
         move_counter (int): Счетчик текущего хода симуляции.
         render (RenderInput): Объект для отображения текущего состояния карты в консоли.
@@ -33,18 +32,25 @@ class Simulation:
             Приостанавливает бесконечный цикл симуляции и предлагает пользователю выбрать продолжить или выйти из игры.
     """
 
-    def __init__(self, map_population):
+    def __init__(self):
         """
         Инициализация объекта Simulation.
 
         Args:
             map_population (dict): Словарь, определяющий начальное распределение существ и объектов на карте.
         """
-        self.maps = Map(12, 12)  # Создаем карту размером 12x12
+        self.maps = Map(14, 18)  # Создаем карту размером 12x12
         self.move_counter = 0  # Счетчик текущего хода
         self.render = RenderInput(self.maps)  # Объект для отображения состояния карты
-        self.action = Actions(self.maps, map_population)  # Объект для выполнения действий с существами и объектами
-        self.action.init_actions()  # Размещаем начальные существа и объекты на карте
+        self.action = Actions(self.maps)  # Объект для выполнения действий с существами и объектами
+        self.map_populations = (
+            SpawnHerbivore(self.maps),
+            SpawnPredator(self.maps),
+            SpawnGrass(self.maps),
+            SpawnRock(self.maps),
+            SpawnTree(self.maps),
+        )
+        self.action.init_actions(self.map_populations)  # Размещаем начальные существа и объекты на карте
 
     def next_turn(self):
         """
@@ -77,12 +83,12 @@ class Simulation:
                 self.render.display_map()
                 print("Хищники умерли с голоду!")
                 break
-            # Приостанавливаем симуляцию каждые 10 ходов для возможности вмешательства
-            if count == 10:
+            # Приостанавливаем симуляцию каждые 15 ходов для возможности вмешательства
+            if count == 15:
                 self.pause_simulation()
                 count = 0
             self.next_turn()  # Выполняем следующий ход симуляции
-            self.action.check_and_add_grass()  # Проверяем и добавляем траву на карту
+            self.action.check_and_add_grass(self.map_populations)  # Проверяем и добавляем траву на карту
             count += 1
 
     @staticmethod
@@ -96,14 +102,6 @@ class Simulation:
 
 
 if __name__ == '__main__':
-    # Начальное распределение существ и объектов на карте
-    map_populations = {
-        Herbivore: 6,
-        Predator: 2,
-        Grass: 10,
-        Rock: 12,
-        Tree: 14,
-    }
     # Создаем объект симуляции и запускаем симуляцию
-    game = Simulation(map_populations)
+    game = Simulation()
     game.start_simulation()

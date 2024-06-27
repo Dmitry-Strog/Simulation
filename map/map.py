@@ -85,12 +85,12 @@ class Map:
         if key in self._collection_entity:
             del self._collection_entity[key]
 
-    def is_entity(self, coordinate):
+    def is_entity(self, coordinate: Coordinates):
         """
         Проверяет, свободна ли указанная клетка на карте.
 
         Args:
-            coordinate (tuple): Кортеж с координатами (row, column).
+            coordinate (Coordinates): Класс с координатами (row, column).
 
         Returns:
             bool: True, если клетка свободна (нет сущности), иначе False.
