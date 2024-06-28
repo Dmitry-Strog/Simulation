@@ -1,5 +1,3 @@
-from abc import abstractmethod
-
 from entities.entity import Entity
 from map.coordinate import Coordinates
 
@@ -55,7 +53,7 @@ class Creature(Entity):
             world_map.remove_entity((self.coordinate.row, self.coordinate.column))
             return
 
-        if self.speed + 1 >= len(path):
+        if self.speed >= len(path):
             self.eat(world_map, path)
         else:
             next_position = path[self.speed]

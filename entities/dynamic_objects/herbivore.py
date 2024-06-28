@@ -16,7 +16,7 @@ class Herbivore(Creature):
         _health_decrease (int): Количество здоровья, которое теряется при каждом ходе.
     """
 
-    def __init__(self, coordinate, speed=1, hp=60, attack=20, health_increase=10, health_decrease=5):
+    def __init__(self, coordinate, speed=2, hp=60, attack=20, health_increase=10, health_decrease=5):
         """
         Инициализация травоядного существа с заданными координатами, скоростью, здоровьем, атакой, увеличением и
         уменьшением здоровья.

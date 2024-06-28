@@ -15,7 +15,7 @@ class SpawnPredator(SpawnEntity):
             Создает объект Predator на заданных координатах.
     """
 
-    def __init__(self, maps, percentage=0.02):
+    def __init__(self, maps, percentage=0.01):
         """
         Инициализирует объект SpawnPredator с заданной картой и процентом размещения хищников.
 
