@@ -20,6 +20,7 @@ class Simulation:
         move_counter (int): Счетчик текущего хода симуляции.
         render (RenderInput): Объект для отображения текущего состояния карты в консоли.
         action (Actions): Объект для выполнения действий с существами и объектами на карте.
+        map_populations (tuple): Кортеж объектов для начального распределения существ и объектов на карте.
 
     Methods:
         next_turn():
@@ -35,11 +36,8 @@ class Simulation:
     def __init__(self):
         """
         Инициализация объекта Simulation.
-
-        Args:
-            map_population (dict): Словарь, определяющий начальное распределение существ и объектов на карте.
         """
-        self.maps = Map(14, 18)  # Создаем карту размером 12x12
+        self.maps = Map(14, 18)  # Создаем карту размером 14x18
         self.move_counter = 0  # Счетчик текущего хода
         self.render = RenderInput(self.maps)  # Объект для отображения состояния карты
         self.action = Actions(self.maps)  # Объект для выполнения действий с существами и объектами
