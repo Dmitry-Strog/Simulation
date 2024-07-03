@@ -1,8 +1,6 @@
 import random
 
 from action.pathfinder import PathFinder
-from entities.static_objects.grass import Grass
-from map.coordinate import Coordinates
 from map.map import Map
 
 

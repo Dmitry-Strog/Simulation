@@ -16,7 +16,7 @@ class Predator(Creature):
         _health_decrease (int): Количество здоровья, которое теряется при каждом ходе.
     """
 
-    def __init__(self, coordinate, speed=1, hp=100, attack=20, health_increase=20, health_decrease=10):
+    def __init__(self, coordinate, speed=1, hp=100, attack=20, health_increase=20, health_decrease=5):
         """
         Инициализация хищного существа с заданными координатами, скоростью, здоровьем, атакой, увеличением и
         уменьшением здоровья.
@@ -28,7 +28,7 @@ class Predator(Creature):
             attack (int, optional): Сила атаки. По умолчанию 20.
             health_increase (int, optional): Количество здоровья, которое восстанавливается при поедании пищи.
             По умолчанию 20.
-            health_decrease (int, optional): Количество здоровья, которое теряется при каждом ходе. По умолчанию 10.
+            health_decrease (int, optional): Количество здоровья, которое теряется при каждом ходе. По умолчанию 5.
         """
         super().__init__(coordinate, speed, hp, attack, health_increase, health_decrease)
         self._max_hp = 100

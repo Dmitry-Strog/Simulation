@@ -23,7 +23,7 @@ class Herbivore(Creature):
 
         Args:
             coordinate (Coordinates): Координаты травоядного существа.
-            speed (int, optional): Скорость травоядного существа. По умолчанию 1.
+            speed (int, optional): Скорость травоядного существа. По умолчанию 2.
             hp (int, optional): Начальное количество здоровья. По умолчанию 60.
             attack (int, optional): Сила атаки. По умолчанию 20.
             health_increase (int, optional): Количество здоровья, которое восстанавливается при поедании пищи.

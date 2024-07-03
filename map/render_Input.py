@@ -52,7 +52,7 @@ class RenderInput:
 
         if len(my_dict) == 2:
             output += "   "
-        value = (self._maps.width - 7) * "   "
+        value = (self._maps.width - 8) * "   "
         print('| ' + f'Шаг:{self.move_counter} {value} {output}' + ' |')
 
     def _count_dict(self):
