@@ -12,6 +12,7 @@
 
 
 ### Примеры реализации проекта:
-<img width="348" alt="image" src="https://github.com/Dmitry-Strog/Simulation/assets/115720398/1f727c7f-be70-4aac-8f54-f6c02a2f0910">
+<img width="500" alt="image" src="https://github.com/Dmitry-Strog/Simulation/assets/115720398/776b5df4-46cd-47f7-9e00-6d1f5f51d9b7">
 
+<img width="500" alt="image" src="https://github.com/Dmitry-Strog/Simulation/assets/115720398/e678ba87-995e-4e5b-95dd-6a482b960e0c">
 
